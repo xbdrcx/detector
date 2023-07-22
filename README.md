@@ -1,4 +1,6 @@
 # AIDetector
-Simple AI Algorithm Made In 𝗣𝘆𝘁𝗵𝗼𝗻 Able To Detect Things Using 𝗢𝗽𝗲𝗻𝗖𝗩 Module and 𝗛𝗮𝗮𝗿𝗖𝗮𝘀𝗰𝗮𝗱𝗲 Method
+AI Algorithm Made In 𝗣𝘆𝘁𝗵𝗼𝗻 able to detect faces Using 𝗢𝗽𝗲𝗻𝗖𝗩 and the 𝗛𝗮𝗮𝗿𝗖𝗮𝘀𝗰𝗮𝗱𝗲 method
 
-Build Under Python Version 3.10.2
+Copyright 2023 <COPYRIGHT Bruno Cruz>
+
+https://opensource.org/license/mit/
