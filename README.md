@@ -1,2 +1,2 @@
 # Detector
-AI Algorithm Made In 𝗣𝘆𝘁𝗵𝗼𝗻 able to detect faces Using 𝗢𝗽𝗲𝗻𝗖𝗩 and 𝗛𝗮𝗮𝗿𝗖𝗮𝘀𝗰𝗮𝗱𝗲.
+Python algorithm capable of detecting things (like faces, cats, etc) using OpenCV and Haar Cascade Classifier.
