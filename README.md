@@ -1,2 +1,2 @@
 # Detector
-Python algorithm (with GUI) capable of detecting things (like faces, cats, etc) using OpenCV and Haar Cascade Classifier.
+**Detector** is a Python algorithm (with UI) capable of detecting things (such as faces, cats, etc) using OpenCV and Haar Cascade Classifier.
