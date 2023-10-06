@@ -1,8 +1,8 @@
 import cv2, os, time
-from moviepy.editor import *
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
+from moviepy.editor import *
 
 # Haar Cascades (https://github.com/opencv/opencv/tree/master/data/haarcascades)
 
@@ -41,7 +41,7 @@ class GUI():
         self.cam_btn = tk.Button(self.source_frame, text="Camera", command=lambda:read_vid_source(self, 1), state="disabled")
         self.cam_btn.grid(row=1, column=3, padx=10, pady=10)
         tk.Label(self.options_frame, text="Record:").grid(row=0, column=0)
-        self.record_toggle = tk.Button(self.options_frame, width=3, bg="red", command=self.switch)
+        self.record_toggle = tk.Button(self.options_frame, width=3, bg="red", text="OFF", command=self.switch)
         self.record_toggle.grid(row=0, column=1, padx=10, pady=10)
         tk.Label(self.bottom_frame, text="When Detection Running, Press Q to Quit").grid(row=0, column=0, padx=10, pady=10)
         # INIT
@@ -50,10 +50,10 @@ class GUI():
     def switch(self):
         global is_on
         if is_on:
-            self.record_toggle.config(bg="red")
+            self.record_toggle.config(bg="red", text="OFF")
             is_on = False
         else:
-            self.record_toggle.config(bg="green")
+            self.record_toggle.config(bg="green", text="ON")
             is_on = True
 
 # State
