@@ -43,6 +43,7 @@ class GUI():
         tk.Label(self.options_frame, text="Record:").grid(row=0, column=0)
         self.record_toggle = tk.Button(self.options_frame, width=3, bg="red", text="OFF", command=self.switch)
         self.record_toggle.grid(row=0, column=1, padx=10, pady=10)
+        tk.Button(self.options_frame, text="Recordings", command=lambda:os.startfile(os.path.abspath("./"))).grid(row=0, column=2, padx=10, pady=10)
         tk.Label(self.bottom_frame, text="When Detection Running, Press Q to Quit").grid(row=0, column=0, padx=10, pady=10)
         # INIT
         self.root.mainloop()
