@@ -6,6 +6,7 @@ from moviepy.editor import *
 
 # Haar Cascades (https://github.com/opencv/opencv/tree/master/data/haarcascades)
 
+multiscale_factor = 1.8
 is_on = False
 
 class GUI():
@@ -103,7 +104,7 @@ def read_vid_source(gui, source: int):
             if successful_frame_read == False:
                 break
             grayscaled_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            coordinates = trained_data.detectMultiScale(grayscaled_img)
+            coordinates = trained_data.detectMultiScale(grayscaled_img, scaleFactor=multiscale_factor)
             for(x, y, w, h) in coordinates:
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
             if is_on:
@@ -139,7 +140,7 @@ def read_img(gui):
             name = filename.split("/")[-1]
             img = cv2.imread(filename)
             grayscaled_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            coordinates = trained_data.detectMultiScale(grayscaled_img)
+            coordinates = trained_data.detectMultiScale(grayscaled_img, scaleFactor=multiscale_factor)
             for (x, y, w, h) in coordinates:
                 cv2.rectangle(img , (x, y), (x+w, y+h), (0, 255, 0), 1)
             cv2.imshow('Detector', img)
