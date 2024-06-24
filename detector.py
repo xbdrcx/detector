@@ -6,15 +6,16 @@ from moviepy.editor import *
 
 # Haar Cascades (https://github.com/opencv/opencv/tree/master/data/haarcascades)
 
-multiscale_factor = 1.8
-is_on = False
+multiscale_factor = 1.4
+recording_on = False
+saveimgs_on = False
 
 class GUI():
     def __init__(self):
         # MAIN CONFIG
         self.root = tk.Tk()
-        self.root.title("Detector")            
-        self.root.geometry("430x280")
+        self.root.title("Detector")
+        self.root.geometry("420x320")
         self.root.resizable(0,0)
         # FRAMES
         self.haar_frame = tk.Frame(self.root)
@@ -41,22 +42,34 @@ class GUI():
         self.video_btn.grid(row=1, column=2, padx=10, pady=10)
         self.cam_btn = tk.Button(self.source_frame, text="Camera", command=lambda:read_vid_source(self, 1), state="disabled")
         self.cam_btn.grid(row=1, column=3, padx=10, pady=10)
-        tk.Label(self.options_frame, text="Record:").grid(row=0, column=0)
-        self.record_toggle = tk.Button(self.options_frame, width=3, bg="red", text="OFF", command=self.switch)
+        tk.Label(self.options_frame, text="Record:").grid(row=0, column=0, sticky="w")
+        self.record_toggle = tk.Button(self.options_frame, width=3, bg="red", text="OFF", command=self.switch_recording)
         self.record_toggle.grid(row=0, column=1, padx=10, pady=10)
+        tk.Label(self.options_frame, text="Capture images:").grid(row=1, column=0, sticky="w")
+        self.save_imgs_toggle = tk.Button(self.options_frame, width=3, bg="red", text="OFF", command=self.switch_saveimgs)
+        self.save_imgs_toggle.grid(row=1, column=1, padx=10, pady=10)
         tk.Button(self.options_frame, text="Recordings", command=lambda:os.startfile(os.path.abspath("./"))).grid(row=0, column=2, padx=10, pady=10)
         tk.Label(self.bottom_frame, text="When Detection Running, Press Q to Quit").grid(row=0, column=0, padx=10, pady=10)
         # INIT
         self.root.mainloop()
 
-    def switch(self):
-        global is_on
-        if is_on:
+    def switch_recording(self):
+        global recording_on
+        if recording_on:
             self.record_toggle.config(bg="red", text="OFF")
-            is_on = False
+            recording_on = False
         else:
             self.record_toggle.config(bg="green", text="ON")
-            is_on = True
+            recording_on = True
+
+    def switch_saveimgs(self):
+        global saveimgs_on
+        if saveimgs_on:
+            self.save_imgs_toggle.config(bg="red", text="OFF")
+            saveimgs_on = False
+        else:
+            self.save_imgs_toggle.config(bg="green", text="ON")
+            saveimgs_on = True
 
 # State
 # Tkinter Button States (normal, disabled, active)
@@ -88,7 +101,7 @@ def read_vid_source(gui, source: int):
             name = filename.split("/")[-1].split(".")[0]
         elif source == 1:
             vid_source = cv2.VideoCapture(0)
-        if is_on:
+        if recording_on:
             if vid_source.isOpened() and source == 0: 
                 width  = vid_source.get(cv2.CAP_PROP_FRAME_WIDTH)
                 height = vid_source.get(cv2.CAP_PROP_FRAME_HEIGHT)
@@ -106,8 +119,13 @@ def read_vid_source(gui, source: int):
             grayscaled_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             coordinates = trained_data.detectMultiScale(grayscaled_img, scaleFactor=multiscale_factor)
             for(x, y, w, h) in coordinates:
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            if is_on:
+                cv2.rectangle(frame, (x, y), (x+w*2, y+h*2), (0, 255, 0), 2)
+                if saveimgs_on:
+                    print(x - w, y - h)
+                    print(w * 2, h * 2)
+                    img_captured = frame[y-h:y-h+h*2, x-w:x-w+w*2]
+                    cv2.imwrite(filename + "_" + str(x+y) + ".jpg", img_captured)
+            if recording_on:
                 out.write(frame)
             cv2.imshow('Detector', frame)
             key = cv2.waitKey(1)
@@ -115,7 +133,7 @@ def read_vid_source(gui, source: int):
                 break
         cv2.destroyWindow("Detector")
         vid_source.release()
-        if is_on:
+        if recording_on:
             out.release()
             time.sleep(0.5)
             video_clip = VideoFileClip("output.avi")
@@ -126,7 +144,8 @@ def read_vid_source(gui, source: int):
                 final_clip = video_clip.without_audio()
                 final_clip.write_videofile("cam.mp4")
             os.remove("output.avi")
-    except:
+    except Exception as e:
+        print(e)
         messagebox.showerror(title="Error", message="Something went wrong.")
     change_button_state(gui, "normal")
     cv2.destroyAllWindows()
