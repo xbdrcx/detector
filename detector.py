@@ -163,7 +163,7 @@ def read_img(gui):
             for (x, y, w, h) in coordinates:
                 cv2.rectangle(img , (x, y), (x+w, y+h), (0, 255, 0), 1)
             cv2.imshow('Detector', img)
-            if is_on:
+            if recording_on:
                 cv2.imwrite(name, img)
             key = cv2.waitKey()
             if key == 81 or key == 113:
